@@ -3,7 +3,7 @@
     <t-menu
       v-model:expanded="expanded"
       theme="dark"
-      default-value="item1"
+      default-value="0-1"
       :collapsed="collapsed"
       style="height: 100vh;"
     >
@@ -19,75 +19,46 @@
         <p v-show="!collapsed" style="color: white; margin-left: 8px; font-weight: 700;">南华大学 IOT 云平台</p>
       </template>
 
-      <t-menu-item value="item1">
+      <t-submenu value="0">
+        <template #icon>
+          <t-icon name="cloud" />
+        </template>
+        <template #title>
+          <span>开发者中心</span>
+        </template>
+        <t-menu-item value="0-1"> 设备管理 </t-menu-item>
+      </t-submenu>
+
+      <t-submenu value="1">
         <template #icon>
           <t-icon name="dashboard" />
         </template>
-        仪表盘
-      </t-menu-item>
-      <t-menu-item value="resource">
-        <template #icon>
-          <t-icon name="server" />
+        <template #title>
+          <span>设备数据</span>
         </template>
-        资源列表
-      </t-menu-item>
-      <t-menu-item value="root">
-        <template #icon>
-          <t-icon name="root-list" />
-        </template>
-        根目录
-      </t-menu-item>
+        <t-menu-item value="1-1"> 历史在线数据 </t-menu-item>
+        <t-menu-item value="1-2"> 历史传感数据 </t-menu-item>
+        <t-menu-item value="1-3"> 历史命令数据 </t-menu-item>
+      </t-submenu>
+
       <t-submenu value="2">
         <template #icon>
-          <t-icon name="control-platform" />
+          <t-icon name="chart-bubble" />
         </template>
         <template #title>
-          <span>调度平台</span>
+          <span>逻辑控制</span>
         </template>
-        <t-menu-item value="2-1"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="2-2"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="2-3"> 二级菜单内容 </t-menu-item>
+        <t-menu-item value="2-1"> 策略管理 </t-menu-item>
+        <t-menu-item value="2-2"> 策略执行记录 </t-menu-item>
       </t-submenu>
+
       <t-menu-item value="precise-monitor">
         <template #icon>
           <t-icon name="precise-monitor" />
         </template>
         精准监控
       </t-menu-item>
-      <t-submenu title="消息区" value="3">
-        <template #icon>
-          <t-icon name="mail" />
-        </template>
-        <template #title>
-          <span>消息区</span>
-        </template>
-        <t-menu-item value="3-1"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="3-2"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="3-3"> 二级菜单内容 </t-menu-item>
-      </t-submenu>
-      <t-menu-item value="user-circle">
-        <template #icon>
-          <t-icon name="user-circle" />
-        </template>
-        个人中心
-      </t-menu-item>
-      <t-submenu value="4">
-        <template #icon>
-          <t-icon name="play-circle" />
-        </template>
-        <template #title>
-          <span>视频区</span>
-        </template>
-        <t-menu-item value="4-1"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="4-2"> 二级菜单内容 </t-menu-item>
-        <t-menu-item value="4-3"> 二级菜单内容 </t-menu-item>
-      </t-submenu>
-      <t-menu-item value="edit1">
-        <template #icon>
-          <t-icon name="edit-1" />
-        </template>
-        资源编辑
-      </t-menu-item>
+
       <template #operations>
         <t-icon class="t-menu__operations-icon" name="view-list" @click="changeCollapsed" />
       </template>
