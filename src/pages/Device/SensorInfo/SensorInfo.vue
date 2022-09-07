@@ -23,11 +23,14 @@
 
 <script setup>
 import Table from "./Table/Table.vue";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import AddForm from "./AddForm/AddForm.vue";
 import api from "../../../api/index.js";
+import {useDeviceStore} from "../../../../store/Device/index.js";
 
+const deviceStore = useDeviceStore()
 const loading = ref(false)
+let deviceID = 0
 
 const showModal = reactive({
   data: false
@@ -37,11 +40,17 @@ const tableData = reactive({
   data: []
 })
 
+//如果deviceStore里面的设备信息发生变化，获取对应设备传感器列表
+watch(() => deviceStore.deviceInfo, async (newVal) => {
+  deviceID = newVal.ID
+  await handleInit()
+})
+
 async function handleInit() {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.sensor.getSensorInfo({deviceID: '3'})
+    const data = await api.sensor.getSensorInfo({deviceID})
     if (data) {
       tableData.data = data.data
     }
@@ -50,10 +59,6 @@ async function handleInit() {
   }
 
 }
-
-onMounted(async () => {
-  await handleInit()
-})
 </script>
 
 <style scoped>
