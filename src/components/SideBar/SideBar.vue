@@ -5,7 +5,7 @@
       theme="dark"
       v-model:value="menuValue"
       :collapsed="collapsed"
-      style="height: 100vh;"
+      style="height: 100vh; position: fixed"
     >
 
       <template #logo>
@@ -59,9 +59,9 @@
         精准监控
       </t-menu-item>
 
-      <template #operations>
-        <t-icon class="t-menu__operations-icon" name="view-list" @click="changeCollapsed" />
-      </template>
+<!--      <template #operations>-->
+<!--        <t-icon class="t-menu__operations-icon" name="view-list" @click="changeCollapsed" />-->
+<!--      </template>-->
     </t-menu>
   </div>
 </template>
