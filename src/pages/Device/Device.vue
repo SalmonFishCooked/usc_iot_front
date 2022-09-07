@@ -2,9 +2,9 @@
   <div>
     <DeviceInfo />
     <div class="grid grid-cols-12 mt-4 gap-4">
-      <SensorInfo class="col-span-6" />
-      <ActuatorInfo class="col-span-6" />
-      <CameraInfo class="col-span-6" />
+      <SensorInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
+      <ActuatorInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
+      <CameraInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
     </div>
   </div>
 </template>
@@ -18,5 +18,9 @@ import CameraInfo from "./CameraInfo/CameraInfo.vue";
 </script>
 
 <style scoped>
-
+@media (min-width: 1920px) {
+  .oversize\:col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+}
 </style>

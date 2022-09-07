@@ -3,7 +3,7 @@
     <div class="flex items-center space-x-2 mb-4">
       <img class="w-8" src="../../../assets/svg/sensor.svg" alt="">
       <p class="font-bold text-lg flex-1">传感器</p>
-      <t-button theme="primary">
+      <t-button theme="primary" @click="showModal.data = true">
         <t-icon name="add" />
         新建
       </t-button>
@@ -14,12 +14,19 @@
     </div>
     <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
     <Table v-show="tableData.data.length" v-model:data="tableData" />
+
+    <AddForm v-model:show="showModal" />
   </div>
 </template>
 
 <script setup>
 import Table from "./Table/Table.vue";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
+import AddForm from "./AddForm/AddForm.vue";
+
+const showModal = reactive({
+  data: false
+})
 
 const tableData = reactive({
   data: []
