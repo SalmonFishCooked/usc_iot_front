@@ -17,9 +17,15 @@
       @row-click="handleRowClick"
     >
       <template #device_transmission_type="{ row }">
-        <t-tag theme="primary" v-if="row.device_transmission_type === 0" size="small">只上报</t-tag>
-        <t-tag theme="warning" v-if="row.device_transmission_type === 1" size="small">报警</t-tag>
-        <t-tag theme="danger" v-if="row.device_transmission_type === 2" size="small">故障</t-tag>
+        <t-tooltip theme="light" content="只支持设备数据上报至云端">
+          <t-tag theme="primary" v-if="row.device_transmission_type === 0" size="small">只上报</t-tag>
+        </t-tooltip>
+        <t-tooltip theme="light" content="当设备发生指定的状态或达到指定值时，上报警报信号">
+          <t-tag theme="warning" v-if="row.device_transmission_type === 1" size="small">报警</t-tag>
+        </t-tooltip>
+        <t-tooltip theme="light" content="当设备发生指定的状态或达到指定值时，上报故障信息">
+          <t-tag theme="danger" v-if="row.device_transmission_type === 2" size="small">故障</t-tag>
+        </t-tooltip>
       </template>
       <template #device_data_type="{ row }">
         <t-tag theme="success" v-if="row.device_data_type === 0" size="small">整数型</t-tag>
@@ -28,6 +34,12 @@
         <t-tag theme="success" v-if="row.device_data_type === 3" size="small">字符型</t-tag>
         <t-tag theme="success" v-if="row.device_data_type === 4" size="small">枚举型</t-tag>
         <t-tag theme="success" v-if="row.device_data_type === 5" size="small">二进制型</t-tag>
+      </template>
+      <template #op-column>
+        <p>操作</p>
+      </template>
+      <template #op="slotProps">
+        <t-icon class="cursor-pointer" name="delete" @click="rehandleClickOp(slotProps)">删除</t-icon>
       </template>
     </t-table>
   </div>
@@ -41,8 +53,8 @@ const total = 28;
 for (let i = 0; i < total; i++) {
   data.push({
     id: i,
-    device_name: i % 2 === 0 ? '共有' : '私有',
-    device_flag: ['String', 'Number', 'Array', 'Object'][i % 4],
+    device_name: '测试传感器' + i + '号',
+    device_flag: 'testcgq' + i ,
     device_transmission_type: [0, 1, 2][i % 3],
     device_data_type: [0, 1, 2, 3, 4, 5][i % 6],
   });
@@ -79,10 +91,11 @@ const columns = [
     width: 100,
   },
   {
-    colKey: 'detail.position',
+    colKey: 'op',
+    width: 60,
     align: 'center',
-    title: '操作',
-    width: 100,
+    title: 'op-column',
+    cell: 'op',
   },
 ];
 
@@ -100,6 +113,10 @@ const selectedRowKeys = ref([])
 const rehandleSelectChange = (value, { selectedRowData }) => {
   selectedRowKeys.value = value;
 }
+
+const rehandleClickOp = ({ text, row }) => {
+  console.log(text, row);
+};
 
 const pagination = {
   defaultCurrent: 1,
