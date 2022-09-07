@@ -39,7 +39,10 @@ import {ref} from 'vue'
 
 const form = ref(null);
 const FORM_RULES = {
-  device_name: [{ required: true, message: '传感名称必填' }],
+  device_name: [
+    { required: true, message: '传感名称必填'},
+    { max: 15, message: '最多输入十五个字符'},
+  ],
   device_flag: [{ required: true, message: '标识名必填' }],
   device_transmission_type: [{ required: true, message: '传输类型必填' }],
   device_data_type: [{ required: true, message: '数据类型必填' }]
