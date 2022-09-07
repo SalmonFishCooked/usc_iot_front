@@ -3,7 +3,7 @@
     <t-menu
       v-model:expanded="expanded"
       theme="dark"
-      default-value="0-1"
+      v-model:value="menuValue"
       :collapsed="collapsed"
       style="height: 100vh;"
     >
@@ -67,7 +67,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref, watch} from 'vue'
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+
+const menuValue = ref('0-1')
+watch(menuValue, (newVal) => {
+  switch (newVal) {
+    case '0-1':
+      router.push({name: 'Device'});break;
+  }
+}, {
+  immediate:true //初始化也监测一次
+})
 
 const collapsed = ref(false)
 const changeCollapsed = () => {

@@ -1,9 +1,16 @@
 <script setup>
-import Main from "./pages/Main/Main.vue";
+import SideBar from "./components/SideBar/SideBar.vue";
+import TopBar from "./components/TopBar/TopBar.vue";
 </script>
 
 <template>
-  <Main />
+  <div class="flex">
+    <SideBar />
+    <div class="w-full">
+      <TopBar />
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <style scoped>
