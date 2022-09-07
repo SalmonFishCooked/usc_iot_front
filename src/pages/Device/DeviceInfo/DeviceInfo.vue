@@ -10,7 +10,7 @@
           <t-tooltip v-if="!deviceData.data.IsOnline" theme="light" class="mr-2" content="当前设备处于离线状态">
             <t-tag class="ml-2" theme="danger">离线</t-tag>
           </t-tooltip>
-          <t-tooltip v-if="deviceData.data.IsOnline" theme="light" class="mr-2" content="当前设备处于离线状态">
+          <t-tooltip v-if="deviceData.data.IsOnline" theme="light" class="mr-2" content="当前设备处于在线状态">
             <t-tag class="ml-2" theme="success">在线</t-tag>
           </t-tooltip>
           <div class="text-gray-600 font-bold text-sm">设备ID：{{deviceData.data.ID}}</div>
@@ -24,7 +24,10 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import api from "../../../api/index.js";
+import { NotifyPlugin } from 'tdesign-vue-next';
+import {useDeviceStore} from "../../../../store/Device/index.js";
 
+const deviceStore = useDeviceStore()
 const loading = ref(false)
 
 const deviceData = reactive({
@@ -38,6 +41,14 @@ async function handleInit() {
     const data = await api.device.getDeviceInfo({id: 3})
     if (data) {
       deviceData.data = data.data[0]
+      deviceStore.deviceInfo = data.data[0]
+    } else {
+      await NotifyPlugin('error', {
+        title: '未能连接到后端服务器',
+        content: '请确保后端服务器已经打开',
+        closeBtn: true,
+        duration: 0
+      })
     }
 
     loading.value = false
