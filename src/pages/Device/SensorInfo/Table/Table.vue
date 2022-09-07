@@ -3,7 +3,7 @@
     <!-- 当数据为空需要占位时，会显示 cellEmptyContent -->
     <t-table
       row-key="id"
-      :data="data"
+      :data="data.data"
       :columns="columns"
       :stripe="stripe"
       :bordered="bordered"
@@ -46,19 +46,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {reactive, ref} from 'vue';
 
-const data = [];
+const props = defineProps({
+  data: Object
+})
+
+const data = reactive({
+  data: []
+});
 const total = 28;
-for (let i = 0; i < total; i++) {
-  data.push({
-    id: i,
-    device_name: '测试传感器' + i + '号',
-    device_flag: 'testcgq' + i ,
-    device_transmission_type: [0, 1, 2][i % 3],
-    device_data_type: [0, 1, 2, 3, 4, 5][i % 6],
-  });
-}
+// for (let i = 0; i < total; i++) {
+//   data.push({
+//     id: i,
+//     device_name: '测试传感器' + i + '号',
+//     device_flag: 'testcgq' + i ,
+//     device_transmission_type: [0, 1, 2][i % 3],
+//     device_data_type: [0, 1, 2, 3, 4, 5][i % 6],
+//   });
+// }
 
 const columns = [
   {
