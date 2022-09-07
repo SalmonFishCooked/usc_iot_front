@@ -1,6 +1,6 @@
 <template>
-  <t-form ref="form" :rules="FORM_RULES" :data="formData">
-    <t-form-item label="传感名称" name="device_name" help="用于描述该设备或设备功能的名称（如：温度、空气质量）">
+  <t-form ref="form" :rules="FORM_RULES" :data="formData" @submit="onSubmit">
+    <t-form-item label="传感器名称" name="device_name" help="用于描述该设备或设备功能的名称（如：温度、空气质量）">
       <t-input v-model="formData.device_name" placeholder="请输入内容" />
     </t-form-item>
     <t-form-item label="标识名" name="device_flag" help="数据上报及API调用的变量名（如：AirQuality）">
@@ -31,11 +31,16 @@
     <t-form-item label="设备单位" name="device_unit" help="填写单位，如 ℃, Pa">
       <t-input v-model="formData.device_unit" placeholder="请输入内容" />
     </t-form-item>
+    <t-form-item style="padding-top: 8px;">
+      <t-button theme="primary" type="submit" style="margin-right: 10px">提交</t-button>
+      <t-button theme="default" variant="base" type="reset" style="margin-right: 10px">重置</t-button>
+    </t-form-item>
   </t-form>
 </template>
 
 <script setup>
 import {ref} from 'vue'
+import { MessagePlugin } from 'tdesign-vue-next';
 
 const form = ref(null);
 const FORM_RULES = {
@@ -65,6 +70,16 @@ const optionsDataType = [
   { label: '枚举型', value: 4 },
   { label: '二进制型', value: 5 },
 ];
+
+const onSubmit = ({ validateResult, firstError, e }) => {
+  e.preventDefault();
+  if (validateResult === true) {
+    MessagePlugin.success('提交成功');
+  } else {
+    // console.log('Validate Errors: ', firstError, validateResult);
+    MessagePlugin.warning(firstError);
+  }
+}
 </script>
 
 <style scoped>

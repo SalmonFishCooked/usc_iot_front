@@ -4,7 +4,7 @@
     header="添加传感器"
     mode="modal"
     draggable
-    :on-confirm="() => (visibleModal.data = false)"
+    :footer="false"
     top="24px"
   >
     <template #body>
