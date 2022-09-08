@@ -41,7 +41,7 @@
 <script setup>
 import {reactive, ref, watch} from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next';
-import config from "../config.js";
+import config from "../../config.js";
 import api from "../../../../../api/index.js";
 import PubSub from 'pubsub-js'
 

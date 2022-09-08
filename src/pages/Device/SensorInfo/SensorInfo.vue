@@ -13,7 +13,7 @@
           删除
         </t-button>
       </div>
-      <t-tabs v-model="tabs" class="mb-2">
+      <t-tabs v-model="tabs.value" class="mb-2">
         <t-tab-panel :value="0" label="自定义" :destroy-on-hide="false">
           <Custom v-model:DeviceID="DeviceID" class="mt-4" />
         </t-tab-panel>
@@ -34,7 +34,7 @@
       </t-tabs>
 
       <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
-      <Table v-model:PageInfo="pagination" v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
+      <Table v-model:Tabs="tabs" v-model:PageInfo="pagination" v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
       </t-loading>
 
     <AddForm v-model:DeviceID="DeviceID" v-model:show="showModal" />
@@ -52,7 +52,9 @@ import {DialogPlugin, MessagePlugin} from "tdesign-vue-next";
 
 const deviceStore = useDeviceStore()
 
-const tabs = ref(0)
+const tabs = reactive({
+  value: 0
+})
 const selectVal = reactive({
   value: []
 })

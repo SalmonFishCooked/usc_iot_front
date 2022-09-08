@@ -9,6 +9,11 @@
     <t-form-item label="标识名" name="ApiTag" help="数据上报及API调用的变量名（如：AirQuality）">
       <t-input v-model="formData.ApiTag" placeholder="请输入内容" />
     </t-form-item>
+    <t-form-item label="序列号" name="SerialNumber">
+      <t-select v-model="formData.SerialNumber" placeholder="请选择序列号">
+        <t-option v-for="item in ['0','1','2','3','4','5','6','7','8']" :key="item" :value="item" :label="item"></t-option>
+      </t-select>
+    </t-form-item>
     <t-form-item style="padding-top: 8px;">
       <t-button :loading="btnLoading" theme="primary" type="submit" style="margin-right: 10px">提交</t-button>
       <t-button theme="default" variant="base" type="reset" style="margin-right: 10px">重置</t-button>
@@ -19,7 +24,7 @@
 <script setup>
 import {reactive, ref, watch} from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next';
-import config from "../config.js";
+import config from "../../config.js";
 import api from "../../../../../api/index.js";
 import PubSub from 'pubsub-js'
 

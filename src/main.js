@@ -16,4 +16,6 @@ app.use(TDesign)
 app.use(pinia)
 app.use(router)
 
+app.config.warnHandler = () => null
+
 app.mount('#app')

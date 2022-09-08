@@ -35,6 +35,9 @@
         <t-tag theme="success" v-if="row.DataType === 4" size="small">枚举型</t-tag>
         <t-tag theme="success" v-if="row.DataType === 5" size="small">二进制型</t-tag>
       </template>
+      <template #SerialNumber="{ row }">
+        <t-tag theme="success" size="small">{{row.SerialNumber}}</t-tag>
+      </template>
       <template #op-column>
         <p>操作</p>
       </template>
@@ -46,65 +49,40 @@
 </template>
 
 <script setup>
-import {nextTick, reactive, ref} from 'vue';
+import {nextTick, reactive, ref, watch} from 'vue';
 import {DialogPlugin, MessagePlugin} from 'tdesign-vue-next';
 import api from "../../../../api/index.js";
 import PubSub from "pubsub-js";
+import config from "../config.js";
 
 const props = defineProps({
   data: Object,
   DeviceID: Object,
   SelectVal: Object,
   PageInfo: Object,
+  Tabs: Object
 })
 
 const data = reactive(props.data);
 const myDeviceID = reactive(props.DeviceID)
-
-const columns = [
-  {
-    colKey: 'row-select',
-    type: 'multiple',
-    width: 50,
-  },
-  {
-    colKey: 'Name',
-    align: 'center',
-    title: '名称',
-    ellipsis: true
-  },
-  {
-    colKey: 'ApiTag',
-    align: 'center',
-    title: '标识名',
-    ellipsis: true
-  },
-  {
-    colKey: 'TransmissionType',
-    align: 'center',
-    title: '传输类型',
-    width: 100,
-  },
-  {
-    colKey: 'DataType',
-    align: 'center',
-    title: '数据类型',
-    width: 100,
-  },
-  {
-    colKey: 'op',
-    width: 60,
-    align: 'center',
-    title: 'op-column',
-    cell: 'op',
-  },
-];
+const myTabs = reactive(props.Tabs)
+const columns = ref(config.columns.columnsCustom)
 
 const stripe = ref(false);
 const bordered = ref(true);
 const hover = ref(true);
 const tableLayout = ref(true);
 const size = ref('small');
+
+//Tabs选项卡一变化，改变对应columns
+watch(myTabs, (newVal) => {
+  switch (newVal.value) {
+    case 0:
+      columns.value = config.columns.columnsCustom;break;
+    case 1:
+      columns.value = config.columns.columnsNewlab;break;
+  }
+})
 
 const handleRowClick = (e) => {
 
