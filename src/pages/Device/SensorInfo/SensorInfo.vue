@@ -13,6 +13,26 @@
           删除
         </t-button>
       </div>
+      <t-tabs v-model="tabs" class="mb-2">
+        <t-tab-panel :value="0" label="自定义" :destroy-on-hide="false">
+          <Custom v-model:DeviceID="DeviceID" class="mt-4" />
+        </t-tab-panel>
+        <t-tab-panel :value="1" label="NEWLab" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="2" label="Modbus" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="3" label="模拟量" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="4" label="数字量" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="5" label="ZigBee" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="6" label="农业传感" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="7" label="家居传感" :destroy-on-hide="false">
+        </t-tab-panel>
+      </t-tabs>
+
       <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
       <Table v-model:PageInfo="pagination" v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
       </t-loading>
@@ -31,6 +51,8 @@ import PubSub from "pubsub-js";
 import {DialogPlugin, MessagePlugin} from "tdesign-vue-next";
 
 const deviceStore = useDeviceStore()
+
+const tabs = ref(0)
 const selectVal = reactive({
   value: []
 })
@@ -50,6 +72,10 @@ const tableData = reactive({
 //如果deviceStore里面的设备信息发生变化，获取对应设备传感器列表
 watch(() => deviceStore.deviceInfo, async (newVal) => {
   DeviceID.data = newVal.ID
+  await handleRefresh()
+})
+//如果传感器类型选项卡的值发生变化，重新拉取表
+watch(tabs, async (newVal) => {
   await handleRefresh()
 })
 
@@ -74,7 +100,7 @@ async function handleRefresh(msg, data) {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.sensor.getSensorInfo({...{DeviceID: DeviceID.data, ApiTag: '',}, ...{Page: pagination.data.current, PageSize: pagination.data.pageSize}})
+    const data = await api.sensor.getSensorInfo({...{DeviceID: DeviceID.data, ApiTag: '', Type: tabs.value}, ...{Page: pagination.data.current, PageSize: pagination.data.pageSize}})
     if (data) {
       tableData.data = data.data
       pagination.data.total = data.total

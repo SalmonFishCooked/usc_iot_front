@@ -13,9 +13,18 @@
           <Custom v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="1" label="NEWLab" :destroy-on-hide="false">
-          <template #panel>
-            <p style="padding: 25px">选项卡2的内容，使用 t-tab-panel 渲染</p>
-          </template>
+        </t-tab-panel>
+        <t-tab-panel :value="2" label="Modbus" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="3" label="模拟量" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="4" label="数字量" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="5" label="ZigBee" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="6" label="农业传感" :destroy-on-hide="false">
+        </t-tab-panel>
+        <t-tab-panel :value="7" label="家居传感" :destroy-on-hide="false">
         </t-tab-panel>
       </t-tabs>
     </template>
