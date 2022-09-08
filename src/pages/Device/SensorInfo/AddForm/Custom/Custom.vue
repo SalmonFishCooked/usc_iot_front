@@ -26,7 +26,7 @@
       </t-radio-group>
     </t-form-item>
     <t-form-item label="数据类型" name="DataType">
-      <t-select :disabled="formData.TransmissionType !== 0" v-model="formData.DataType" :options="optionsDataType" placeholder="请选择数据类型" />
+      <t-select :disabled="formData.TransmissionType !== 0" v-model="formData.DataType" :options="config.options.optionsDataType" placeholder="请选择数据类型" />
     </t-form-item>
     <t-form-item label="设备单位" name="Unit" help="填写单位，如 ℃, Pa">
       <t-input v-model="formData.Unit" placeholder="请输入内容" />
@@ -41,7 +41,7 @@
 <script setup>
 import {reactive, ref, watch} from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next';
-import sensorData from "../config.js";
+import config from "../config.js";
 import api from "../../../../../api/index.js";
 import PubSub from 'pubsub-js'
 
@@ -62,16 +62,7 @@ const FORM_RULES = {
   DataType: [{ required: true, message: '数据类型必填' }]
 };
 
-const formData = ref({ ...sensorData });
-
-const optionsDataType = [
-  { label: '整数型', value: 0 },
-  { label: '浮点型', value: 1 },
-  { label: '布尔型', value: 2 },
-  { label: '字符型', value: 3 },
-  { label: '枚举型', value: 4 },
-  { label: '二进制型', value: 5 },
-];
+const formData = ref({ ...config.sensorData });
 
 const onSubmit = async ({ validateResult, firstError, e }) => {
   if (!btnLoading.value) {
@@ -83,7 +74,7 @@ const onSubmit = async ({ validateResult, firstError, e }) => {
       if (data) {
         await MessagePlugin.success('提交成功');
         PubSub.publish("closeSensorAddForm")
-        formData.value = {...sensorData}
+        formData.value = {...config.sensorData}
       }
     } else {
       // console.log('Validate Errors: ', firstError, validateResult);

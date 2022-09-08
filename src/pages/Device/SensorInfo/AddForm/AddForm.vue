@@ -13,6 +13,7 @@
           <Custom v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="1" label="NEWLab" :destroy-on-hide="false">
+          <Newlab v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="2" label="Modbus" :destroy-on-hide="false">
         </t-tab-panel>
@@ -35,6 +36,7 @@
 import {onBeforeUnmount, onMounted, reactive, ref} from 'vue'
 import Custom from "./Custom/Custom.vue";
 import PubSub from "pubsub-js";
+import Newlab from "./Newlab/Newlab.vue";
 
 const props = defineProps({
   show: Object,
