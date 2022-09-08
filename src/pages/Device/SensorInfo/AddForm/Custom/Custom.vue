@@ -83,6 +83,7 @@ const onSubmit = async ({ validateResult, firstError, e }) => {
       if (data) {
         await MessagePlugin.success('提交成功');
         PubSub.publish("closeSensorAddForm")
+        formData.value = {...sensorData}
       }
     } else {
       // console.log('Validate Errors: ', firstError, validateResult);

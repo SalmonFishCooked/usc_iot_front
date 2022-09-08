@@ -8,13 +8,13 @@
           <t-icon name="add" />
           新建
         </t-button>
-        <t-button theme="danger">
+        <t-button @click="handleDelete" theme="danger">
           <t-icon name="delete" />
           删除
         </t-button>
       </div>
       <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
-      <Table v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
+      <Table v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
       </t-loading>
 
     <AddForm v-model:DeviceID="DeviceID" v-model:show="showModal" />
@@ -28,8 +28,12 @@ import AddForm from "./AddForm/AddForm.vue";
 import api from "../../../api/index.js";
 import {useDeviceStore} from "../../../../store/Device/index.js";
 import PubSub from "pubsub-js";
+import {MessagePlugin} from "tdesign-vue-next";
 
 const deviceStore = useDeviceStore()
+const selectVal = reactive({
+  value: []
+})
 const loading = ref(false)
 const DeviceID = reactive({
   data: 0
@@ -61,6 +65,34 @@ async function handleRefresh(msg, data) {
     loading.value = false
   }
 
+}
+
+async function handleDelete() {
+  if (!loading.value) {
+    if (!selectVal.value.length) {
+      await MessagePlugin.info("未选中项")
+      return
+    }
+
+    loading.value = true
+
+    let flag = 1
+    for (let i of selectVal.value) {
+      const data = await api.sensor.deleteSensor({DeviceID: DeviceID.data, ApiTag: i})
+      if (!data) {
+        flag = 0
+      }
+    }
+    if (flag) {
+      await MessagePlugin.success("所选项已全部删除")
+    } else {
+      await MessagePlugin.warning("所选项可能由于网络波动原因导致未全部删除")
+    }
+
+    PubSub.publish("refreshSensorTable")
+
+    loading.value = false
+  }
 }
 
 onMounted(() => {

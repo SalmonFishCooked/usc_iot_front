@@ -11,7 +11,7 @@
       :table-layout="tableLayout ? 'auto' : 'fixed'"
       :size="size"
       :pagination="pagination"
-      :selected-row-keys="selectedRowKeys"
+      :selected-row-keys="selectedRowKeys.value"
       @select-change="rehandleSelectChange"
       cell-empty-content="-"
       @row-click="handleRowClick"
@@ -53,7 +53,8 @@ import PubSub from "pubsub-js";
 
 const props = defineProps({
   data: Object,
-  DeviceID: Object
+  DeviceID: Object,
+  SelectVal: Object,
 })
 
 const data = reactive(props.data);
@@ -105,10 +106,10 @@ const tableLayout = ref(true);
 const size = ref('small');
 
 const handleRowClick = (e) => {
-  console.log(e);
+
 };
 
-const selectedRowKeys = ref([])
+const selectedRowKeys = reactive(props.SelectVal)
 const rehandleSelectChange = (value, { selectedRowData }) => {
   selectedRowKeys.value = value;
 }
