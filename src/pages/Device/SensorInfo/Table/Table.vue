@@ -76,7 +76,7 @@ const columns = [
   {
     colKey: 'ApiTag',
     align: 'center',
-    title: '标志名',
+    title: '标识名',
     ellipsis: true
   },
   {
