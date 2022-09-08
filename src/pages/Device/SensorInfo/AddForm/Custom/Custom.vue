@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import {reactive, ref, watch} from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next';
 import sensorData from "../config.js";
 import api from "../../../../../api/index.js";
@@ -92,6 +92,12 @@ const onSubmit = async ({ validateResult, firstError, e }) => {
     btnLoading.value = false
   }
 }
+
+watch(() => formData.value.TransmissionType, (newVal) => {
+  if (newVal === 1 || newVal === 2) {
+    formData.value.DataType = 2
+  }
+})
 </script>
 
 <style scoped>
