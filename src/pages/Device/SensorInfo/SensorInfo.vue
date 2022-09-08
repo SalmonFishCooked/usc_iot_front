@@ -28,7 +28,7 @@ import AddForm from "./AddForm/AddForm.vue";
 import api from "../../../api/index.js";
 import {useDeviceStore} from "../../../../store/Device/index.js";
 import PubSub from "pubsub-js";
-import {MessagePlugin} from "tdesign-vue-next";
+import {DialogPlugin, MessagePlugin} from "tdesign-vue-next";
 
 const deviceStore = useDeviceStore()
 const selectVal = reactive({
@@ -76,20 +76,33 @@ async function handleDelete() {
 
     loading.value = true
 
-    let flag = 1
-    for (let i of selectVal.value) {
-      const data = await api.sensor.deleteSensor({DeviceID: DeviceID.data, ApiTag: i})
-      if (!data) {
-        flag = 0
-      }
-    }
-    if (flag) {
-      await MessagePlugin.success("所选项已全部删除")
-    } else {
-      await MessagePlugin.warning("所选项可能由于网络波动原因导致未全部删除")
-    }
+    const confirmDia = DialogPlugin({
+      header: '删除',
+      body: '确定删除该项数据？',
+      confirmBtn: '确定',
+      cancelBtn: '取消',
+      onConfirm: async ({ e }) => {
+        let flag = 1
+        for (let i of selectVal.value) {
+          const data = await api.sensor.deleteSensor({DeviceID: DeviceID.data, ApiTag: i})
+          if (!data) {
+            flag = 0
+          }
+        }
+        if (flag) {
+          await MessagePlugin.success("所选项已全部删除")
+        } else {
+          await MessagePlugin.warning("所选项可能由于网络波动原因导致未全部删除")
+        }
 
-    PubSub.publish("refreshSensorTable")
+        PubSub.publish("refreshSensorTable")
+
+        confirmDia.hide();
+      },
+      onClose: ({ e, trigger }) => {
+        confirmDia.hide();
+      },
+    });
 
     loading.value = false
   }
