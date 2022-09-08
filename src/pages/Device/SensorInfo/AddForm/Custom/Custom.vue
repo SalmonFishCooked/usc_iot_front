@@ -1,13 +1,13 @@
 <template>
   <t-form ref="form" :rules="FORM_RULES" :data="formData" @submit="onSubmit">
-    <t-form-item label="传感器名称" name="device_name" help="用于描述该设备或设备功能的名称（如：温度、空气质量）">
-      <t-input v-model="formData.device_name" placeholder="请输入内容" />
+    <t-form-item label="传感器名称" name="Name" help="用于描述该设备或设备功能的名称（如：温度、空气质量）">
+      <t-input v-model="formData.Name" placeholder="请输入内容" />
     </t-form-item>
-    <t-form-item label="标识名" name="device_flag" help="数据上报及API调用的变量名（如：AirQuality）">
-      <t-input v-model="formData.device_flag" placeholder="请输入内容" />
+    <t-form-item label="标识名" name="ApiTag" help="数据上报及API调用的变量名（如：AirQuality）">
+      <t-input v-model="formData.ApiTag" placeholder="请输入内容" />
     </t-form-item>
-    <t-form-item label="传输类型" name="device_transmission_type">
-      <t-radio-group variant="default-filled" v-model="formData.device_transmission_type">
+    <t-form-item label="传输类型" name="TransmissionType">
+      <t-radio-group variant="default-filled" v-model="formData.TransmissionType">
         <t-radio-button :value="0">
           <t-tooltip theme="light" content="只支持设备数据上报至云端">
             只上报
@@ -25,42 +25,44 @@
         </t-radio-button>
       </t-radio-group>
     </t-form-item>
-    <t-form-item label="数据类型" name="device_data_type">
-      <t-select :disabled="formData.device_transmission_type !== 0" v-model="formData.device_data_type" :options="optionsDataType" placeholder="请选择数据类型" />
+    <t-form-item label="数据类型" name="DataType">
+      <t-select :disabled="formData.TransmissionType !== 0" v-model="formData.DataType" :options="optionsDataType" placeholder="请选择数据类型" />
     </t-form-item>
-    <t-form-item label="设备单位" name="device_unit" help="填写单位，如 ℃, Pa">
-      <t-input v-model="formData.device_unit" placeholder="请输入内容" />
+    <t-form-item label="设备单位" name="Unit" help="填写单位，如 ℃, Pa">
+      <t-input v-model="formData.Unit" placeholder="请输入内容" />
     </t-form-item>
     <t-form-item style="padding-top: 8px;">
-      <t-button theme="primary" type="submit" style="margin-right: 10px">提交</t-button>
+      <t-button :loading="btnLoading" theme="primary" type="submit" style="margin-right: 10px">提交</t-button>
       <t-button theme="default" variant="base" type="reset" style="margin-right: 10px">重置</t-button>
     </t-form-item>
   </t-form>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {reactive, ref} from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next';
+import sensorData from "../config.js";
+import api from "../../../../../api/index.js";
+import PubSub from 'pubsub-js'
 
+const props = defineProps({
+  DeviceID: Object
+})
+
+const myDeviceID = reactive(props.DeviceID)
+const btnLoading = ref(false)
 const form = ref(null);
 const FORM_RULES = {
-  device_name: [
+  Name: [
     { required: true, message: '传感名称必填'},
     { max: 15, message: '最多输入十五个字符'},
   ],
-  device_flag: [{ required: true, message: '标识名必填' }],
-  device_transmission_type: [{ required: true, message: '传输类型必填' }],
-  device_data_type: [{ required: true, message: '数据类型必填' }]
+  ApiTag: [{ required: true, message: '标识名必填' }],
+  TransmissionType: [{ required: true, message: '传输类型必填' }],
+  DataType: [{ required: true, message: '数据类型必填' }]
 };
 
-const INITIAL_DATA = {
-  device_name: '',
-  device_flag: '',
-  device_transmission_type: 0,
-  device_data_type: 0,
-  device_unit: '',
-};
-const formData = ref({ ...INITIAL_DATA });
+const formData = ref({ ...sensorData });
 
 const optionsDataType = [
   { label: '整数型', value: 0 },
@@ -71,13 +73,23 @@ const optionsDataType = [
   { label: '二进制型', value: 5 },
 ];
 
-const onSubmit = ({ validateResult, firstError, e }) => {
-  e.preventDefault();
-  if (validateResult === true) {
-    MessagePlugin.success('提交成功');
-  } else {
-    // console.log('Validate Errors: ', firstError, validateResult);
-    MessagePlugin.warning(firstError);
+const onSubmit = async ({ validateResult, firstError, e }) => {
+  if (!btnLoading.value) {
+    e.preventDefault();
+    btnLoading.value = true
+
+    if (validateResult === true) {
+      const data = await api.sensor.createSensor({...formData.value, ...{DeviceID: myDeviceID.data, Type: 0}})
+      if (data) {
+        await MessagePlugin.success('提交成功');
+        PubSub.publish("closeSensorAddForm")
+      }
+    } else {
+      // console.log('Validate Errors: ', firstError, validateResult);
+      await MessagePlugin.warning(firstError);
+    }
+
+    btnLoading.value = false
   }
 }
 </script>

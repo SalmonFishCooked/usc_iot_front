@@ -14,23 +14,26 @@
         </t-button>
       </div>
       <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
-      <Table v-show="tableData.data.length" v-model:data="tableData" />
+      <Table v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
       </t-loading>
 
-    <AddForm v-model:show="showModal" />
+    <AddForm v-model:DeviceID="DeviceID" v-model:show="showModal" />
   </div>
 </template>
 
 <script setup>
 import Table from "./Table/Table.vue";
-import {onMounted, reactive, ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, reactive, ref, watch} from "vue";
 import AddForm from "./AddForm/AddForm.vue";
 import api from "../../../api/index.js";
 import {useDeviceStore} from "../../../../store/Device/index.js";
+import PubSub from "pubsub-js";
 
 const deviceStore = useDeviceStore()
 const loading = ref(false)
-let deviceID = 0
+const DeviceID = reactive({
+  data: 0
+})
 
 const showModal = reactive({
   data: false
@@ -42,15 +45,15 @@ const tableData = reactive({
 
 //如果deviceStore里面的设备信息发生变化，获取对应设备传感器列表
 watch(() => deviceStore.deviceInfo, async (newVal) => {
-  deviceID = newVal.ID
-  await handleInit()
+  DeviceID.data = newVal.ID
+  await handleRefresh()
 })
 
-async function handleInit() {
+async function handleRefresh(msg, data) {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.sensor.getSensorInfo({deviceID})
+    const data = await api.sensor.getSensorInfo({DeviceID: DeviceID.data})
     if (data) {
       tableData.data = data.data
     }
@@ -59,6 +62,13 @@ async function handleInit() {
   }
 
 }
+
+onMounted(() => {
+  PubSub.subscribe("refreshSensorTable", handleRefresh)
+})
+onBeforeUnmount(() => {
+  PubSub.unsubscribe("refreshSensorTable")
+})
 </script>
 
 <style scoped>

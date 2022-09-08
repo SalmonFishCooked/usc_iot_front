@@ -10,7 +10,7 @@
     <template #body>
       <t-tabs v-model="tabs">
         <t-tab-panel :value="0" label="自定义" :destroy-on-hide="false">
-          <Custom class="mt-4" />
+          <Custom v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="1" label="NEWLab" :destroy-on-hide="false">
           <template #panel>
@@ -23,16 +23,31 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import {onBeforeUnmount, onMounted, reactive, ref} from 'vue'
 import Custom from "./Custom/Custom.vue";
+import PubSub from "pubsub-js";
 
 const props = defineProps({
-  show: Object
+  show: Object,
+  DeviceID: Object
 })
 
 const tabs = ref(0)
-
+const myDeviceID = reactive(props.DeviceID)
 const visibleModal = reactive(props.show)
+
+function handleClose() {
+  visibleModal.data = false
+  PubSub.publish("refreshSensorTable")
+}
+
+onMounted(() => {
+  PubSub.subscribe("closeSensorAddForm", handleClose)
+})
+
+onBeforeUnmount(() => {
+  PubSub.unsubscribe("closeSensorAddForm")
+})
 </script>
 
 <style scoped>

@@ -2,7 +2,7 @@
   <div class="tdesign-demo-block-column-large">
     <!-- 当数据为空需要占位时，会显示 cellEmptyContent -->
     <t-table
-      row-key="id"
+      row-key="ApiTag"
       :data="data.data"
       :columns="columns"
       :stripe="stripe"
@@ -47,22 +47,17 @@
 
 <script setup>
 import {nextTick, reactive, ref} from 'vue';
+import {DialogPlugin, MessagePlugin} from 'tdesign-vue-next';
+import api from "../../../../api/index.js";
+import PubSub from "pubsub-js";
 
 const props = defineProps({
-  data: Object
+  data: Object,
+  DeviceID: Object
 })
 
 const data = reactive(props.data);
-
-// for (let i = 0; i < total; i++) {
-//   data.data.push({
-//     id: i,
-//     name: '测试传感器' + i + '号',
-//     flag: 'testcgq' + i ,
-//     transmission_type: [0, 1, 2][i % 3],
-//     data_type: [0, 1, 2, 3, 4, 5][i % 6],
-//   });
-// }
+const myDeviceID = reactive(props.DeviceID)
 
 const columns = [
   {
@@ -119,7 +114,23 @@ const rehandleSelectChange = (value, { selectedRowData }) => {
 }
 
 const rehandleClickOp = ({ text, row }) => {
-  console.log(text, row);
+  const confirmDia = DialogPlugin({
+    header: '删除',
+    body: '确定删除该项数据？',
+    confirmBtn: '确定',
+    cancelBtn: '取消',
+    onConfirm: async ({ e }) => {
+      const data = await api.sensor.deleteSensor({DeviceID: myDeviceID.data, ApiTag: row.ApiTag})
+      if (data) {
+        await MessagePlugin.success("删除成功")
+        PubSub.publish("refreshSensorTable")
+      }
+      confirmDia.hide();
+    },
+    onClose: ({ e, trigger }) => {
+      confirmDia.hide();
+    },
+  });
 };
 
 const pagination = reactive({
