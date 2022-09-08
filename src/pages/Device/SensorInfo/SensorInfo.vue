@@ -14,7 +14,7 @@
         </t-button>
       </div>
       <t-alert v-show="!tableData.data.length" theme="info" message="当前没有任何传感器可用。" />
-      <Table v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
+      <Table v-model:PageInfo="pagination" v-model:SelectVal="selectVal" v-model:DeviceID="DeviceID" v-show="tableData.data.length" v-model:data="tableData" />
       </t-loading>
 
     <AddForm v-model:DeviceID="DeviceID" v-model:show="showModal" />
@@ -53,13 +53,31 @@ watch(() => deviceStore.deviceInfo, async (newVal) => {
   await handleRefresh()
 })
 
+const paginationINIT = {
+  current: 1,
+  pageSize: 5,
+  // defaultCurrent: 1,
+  // defaultPageSize: 10,
+  total: 0,
+  showJumper: false,
+  onChange: async (pageInfo) => {
+    pagination.data.pageSize = pageInfo.pageSize
+    pagination.data.current = pageInfo.current
+    await handleRefresh()
+  },
+}
+const pagination = reactive({
+  data: {...paginationINIT}
+})
+
 async function handleRefresh(msg, data) {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.sensor.getSensorInfo({DeviceID: DeviceID.data})
+    const data = await api.sensor.getSensorInfo({...{DeviceID: DeviceID.data, ApiTag: '',}, ...{Page: pagination.data.current, PageSize: pagination.data.pageSize}})
     if (data) {
       tableData.data = data.data
+      pagination.data.total = data.total
     }
 
     loading.value = false

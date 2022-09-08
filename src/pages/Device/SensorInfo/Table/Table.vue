@@ -10,7 +10,7 @@
       :hover="hover"
       :table-layout="tableLayout ? 'auto' : 'fixed'"
       :size="size"
-      :pagination="pagination"
+      :pagination="pagination.data"
       :selected-row-keys="selectedRowKeys.value"
       @select-change="rehandleSelectChange"
       cell-empty-content="-"
@@ -55,6 +55,7 @@ const props = defineProps({
   data: Object,
   DeviceID: Object,
   SelectVal: Object,
+  PageInfo: Object,
 })
 
 const data = reactive(props.data);
@@ -134,17 +135,7 @@ const rehandleClickOp = ({ text, row }) => {
   });
 };
 
-const pagination = reactive({
-  current: 1,
-  pageSize: 5,
-  // defaultCurrent: 1,
-  // defaultPageSize: 10,
-  total: 1,
-  showJumper: false,
-  onChange: (pageInfo) => {
-    console.log('pagination.onChange', pageInfo);
-  },
-});
+const pagination = reactive(props.PageInfo)
 </script>
 
 <style scoped>
