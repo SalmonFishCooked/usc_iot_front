@@ -38,6 +38,9 @@
       <template #SerialNumber="{ row }">
         <t-tag theme="success" size="small">{{row.SerialNumber}}</t-tag>
       </template>
+      <template #Channel="{ row }">
+        <t-tag theme="success" size="small">{{row.Channel}}</t-tag>
+      </template>
       <template #op-column>
         <p>操作</p>
       </template>
@@ -81,6 +84,10 @@ watch(myTabs, (newVal) => {
       columns.value = config.columns.columnsCustom;break;
     case 1:
       columns.value = config.columns.columnsNewlab;break;
+    case 3:
+      columns.value = config.columns.columnsSimulation;break;
+    case 4:
+      columns.value = config.columns.columnsNumber;break;
   }
 })
 

@@ -10,6 +10,7 @@ const config = {
     "Unit": "",
     "SensorType": "",
     "SerialNumber": "",
+    "Channel": "",
   },
 
   //多选框配置
@@ -38,6 +39,36 @@ const config = {
       { label: '气体', value: '气体' },
       { label: 'MEMS', value: 'MEMS' },
     ],
+    optionsSensorTypeSimulation: [
+      { label: '温度 ℃', value: '温度' },
+      { label: '湿度 %RH', value: '湿度' },
+      { label: '空气质量', value: '空气质量' },
+      { label: '大气压力 kpa', value: '大气压力' },
+      { label: '风速 m/s', value: '风速' },
+      { label: '光照 lx', value: '光照' },
+      { label: '二氧化碳 ppm', value: '二氧化碳' },
+      { label: '土壤温度 ℃', value: '土壤温度' },
+      { label: '土壤湿度 %RH', value: '土壤湿度' },
+      { label: '水位 m', value: '水位' },
+      { label: '风向 °', value: '风向' },
+      { label: 'PM2.5 μg/m³', value: 'PM2.5' },
+      { label: '氧气 %', value: '氧气' },
+      { label: '噪音 dB', value: '噪音' },
+      { label: '重力 kg', value: '重力' },
+      { label: '称重 kg', value: '称重' },
+    ],
+    optionsSensorTypeNumber: [
+      { label: '人体', value: '人体' },
+      { label: '烟雾', value: '烟雾' },
+      { label: '火焰', value: '火焰' },
+      { label: '红外对射', value: '红外对射' },
+      { label: '微动开关', value: '微动开关' },
+      { label: '行程开关', value: '行程开关' },
+      { label: '接近开关', value: '接近开关' },
+      { label: '限位开关', value: '限位开关' },
+      { label: '液位开关', value: '液位开关' },
+      { label: '微波', value: '微波' },
+    ],
   },
 
   //表单规则
@@ -51,6 +82,7 @@ const config = {
     DataType: [{ required: true, message: '数据类型必填' }],
     SensorType: [{ required: true, message: '传感类型必填' }],
     SerialNumber: [{ required: true, message: '序列号必填' }],
+    Channel: [{ required: true, message: '通道号必填' }],
   },
 
   //表格栏
@@ -121,6 +153,82 @@ const config = {
         colKey: 'SerialNumber',
         align: 'center',
         title: '序列号',
+        width: 100,
+      },
+      {
+        colKey: 'op',
+        width: 60,
+        align: 'center',
+        title: 'op-column',
+        cell: 'op',
+      },
+    ],
+    columnsSimulation: [
+      {
+        colKey: 'row-select',
+        type: 'multiple',
+        width: 50,
+      },
+      {
+        colKey: 'Name',
+        align: 'center',
+        title: '名称',
+        ellipsis: true
+      },
+      {
+        colKey: 'ApiTag',
+        align: 'center',
+        title: '标识名',
+        ellipsis: true
+      },
+      {
+        colKey: 'SensorType',
+        align: 'center',
+        title: '模拟量',
+        width: 100,
+      },
+      {
+        colKey: 'Channel',
+        align: 'center',
+        title: '通道号',
+        width: 100,
+      },
+      {
+        colKey: 'op',
+        width: 60,
+        align: 'center',
+        title: 'op-column',
+        cell: 'op',
+      },
+    ],
+    columnsNumber: [
+      {
+        colKey: 'row-select',
+        type: 'multiple',
+        width: 50,
+      },
+      {
+        colKey: 'Name',
+        align: 'center',
+        title: '名称',
+        ellipsis: true
+      },
+      {
+        colKey: 'ApiTag',
+        align: 'center',
+        title: '标识名',
+        ellipsis: true
+      },
+      {
+        colKey: 'SensorType',
+        align: 'center',
+        title: '数字量',
+        width: 100,
+      },
+      {
+        colKey: 'Channel',
+        align: 'center',
+        title: '通道号',
         width: 100,
       },
       {
