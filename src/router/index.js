@@ -3,9 +3,19 @@ import {createRouter, createWebHistory} from 'vue-router'
 const routes = [
   //主页
   {
-    path: '/device',
-    name: 'Device',
-    component: () => import('../pages/Device/Device.vue'),
+    path: '/device/:id',
+    children: [
+      {
+        path: '',
+        name: 'Device',
+        component: () => import('../pages/Device/Device.vue'),
+      },
+      {
+        path: 'history',
+        name: 'DeviceHistory',
+        component: () => import('../pages/DeviceData/History/History.vue')
+      }
+    ]
   },
 ]
 

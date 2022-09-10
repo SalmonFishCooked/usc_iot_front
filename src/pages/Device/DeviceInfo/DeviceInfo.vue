@@ -26,7 +26,9 @@ import {onMounted, reactive, ref} from "vue";
 import api from "../../../api/index.js";
 import { NotifyPlugin } from 'tdesign-vue-next';
 import {useDeviceStore} from "../../../../store/Device/index.js";
+import {useRoute} from "vue-router";
 
+const route = useRoute()
 const deviceStore = useDeviceStore()
 const loading = ref(false)
 
@@ -38,7 +40,7 @@ async function handleInit() {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.device.getDeviceInfo({id: 3})
+    const data = await api.device.getDeviceInfo({id: route.params.id})
     if (data) {
       deviceData.data = data.data[0]
       deviceStore.deviceInfo = data.data[0]

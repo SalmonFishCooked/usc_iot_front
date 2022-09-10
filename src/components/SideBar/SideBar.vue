@@ -67,19 +67,21 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue'
-import {useRouter} from "vue-router";
+import {nextTick, onMounted, ref, watch} from 'vue'
+import {useRoute, useRouter} from "vue-router";
 
 const router = useRouter()
+const route = useRoute()
 
 const menuValue = ref('0-1')
 watch(menuValue, (newVal) => {
+  console.log(menuValue)
   switch (newVal) {
     case '0-1':
-      router.push({name: 'Device'});break;
+      router.push({path: `/device/${3}`});break;
+    case '1-2':
+      router.push({name: 'DeviceHistory'});break;
   }
-}, {
-  immediate:true //初始化也监测一次
 })
 
 const collapsed = ref(false)
@@ -88,6 +90,28 @@ const changeCollapsed = () => {
 }
 
 const expanded = ref([])
+
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      if (route.path === '/') {
+        router.push({path: `/device/${3}`})
+        menuValue.value='0-1'
+      } else {
+        switch (route.name) {
+          case 'Device': {
+            router.push({path: `/device/${3}`})
+            menuValue.value='0-1'
+          }
+          case 'DeviceHistory': {
+            router.push({path: `/device/${3}/history`})
+            menuValue.value='1-2'
+          }
+        }
+      }
+    }, 200)
+  })
+})
 </script>
 
 <style scoped>

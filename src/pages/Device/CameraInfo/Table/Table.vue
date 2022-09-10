@@ -1,5 +1,5 @@
 <template>
-  <div class="tdesign-demo-block-column-large">
+  <div>
     <!-- 当数据为空需要占位时，会显示 cellEmptyContent -->
     <t-table
       row-key="id"
