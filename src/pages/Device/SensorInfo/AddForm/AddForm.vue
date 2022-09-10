@@ -24,8 +24,10 @@
           <Number v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="5" label="ZigBee" :destroy-on-hide="false">
+          <ZigBee v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="6" label="农业传感" :destroy-on-hide="false">
+          <Agriculture v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="7" label="家居传感" :destroy-on-hide="false">
         </t-tab-panel>
@@ -41,6 +43,8 @@ import PubSub from "pubsub-js";
 import Newlab from "./Newlab/Newlab.vue";
 import Simulation from "./Simulation/Simulation.vue";
 import Number from "./Number/Number.vue";
+import ZigBee from "./ZigBee/ZigBee.vue";
+import Agriculture from "./Agriculture/Agriculture.vue";
 
 const props = defineProps({
   show: Object,

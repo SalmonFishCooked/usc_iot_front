@@ -88,6 +88,10 @@ watch(myTabs, (newVal) => {
       columns.value = config.columns.columnsSimulation;break;
     case 4:
       columns.value = config.columns.columnsNumber;break;
+    case 5:
+      columns.value = config.columns.columnsZigBee;break;
+    case 6:
+      columns.value = config.columns.columnsAgriculture;break;
   }
 })
 
