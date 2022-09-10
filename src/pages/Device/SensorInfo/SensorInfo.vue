@@ -124,7 +124,7 @@ async function handleDelete() {
 
     const confirmDia = DialogPlugin({
       header: '删除',
-      body: '确定删除该项数据？',
+      body: '确定删除所选项数据？',
       confirmBtn: '确定',
       cancelBtn: '取消',
       onConfirm: async ({ e }) => {
