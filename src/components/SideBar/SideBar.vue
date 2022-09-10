@@ -100,12 +100,12 @@ onMounted(() => {
       } else {
         switch (route.name) {
           case 'Device': {
-            router.push({path: `/device/${3}`})
             menuValue.value='0-1'
+            break
           }
           case 'DeviceHistory': {
-            router.push({path: `/device/${3}/history`})
             menuValue.value='1-2'
+            break
           }
         }
       }
