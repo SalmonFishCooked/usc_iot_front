@@ -11,6 +11,12 @@ const config = {
     "SensorType": "",
     "SerialNumber": "",
     "Channel": "",
+    "SlaveAddress": "",
+    "FunctionNumber": "",
+    "DataAddress": "",
+    "DataLength": "",
+    "SampleTime": 30,
+    "SampleFormula": "",
   },
 
   //多选框配置
@@ -38,6 +44,22 @@ const config = {
       { label: '压电', value: '压电' },
       { label: '气体', value: '气体' },
       { label: 'MEMS', value: 'MEMS' },
+    ],
+    optionsSensorModbusFunction: [
+      { label: '01 线圈', value: '01' },
+      { label: '02 离散量', value: '02' },
+      { label: '03 保持寄存器', value: '03' },
+      { label: '04 输入寄存器', value: '04' },
+    ],
+    optionsSensorModbusSampleTime: [
+      { label: '30秒', value: 30 },
+      { label: '1分钟', value: 60 },
+      { label: '2分钟', value: 120 },
+      { label: '3分钟', value: 180 },
+      { label: '5分钟', value: 300 },
+      { label: '30分钟', value: 1800 },
+      { label: '1小时', value: 3600 },
+      { label: '1天', value: 86400 },
     ],
     optionsSensorTypeSimulation: [
       { label: '温度 ℃', value: '温度' },
@@ -123,6 +145,9 @@ const config = {
     SensorType: [{ required: true, message: '传感类型必填' }],
     SerialNumber: [{ required: true, message: '序列号必填' }],
     Channel: [{ required: true, message: '通道号必填' }],
+    SlaveAddress: [{ required: true, message: '从机地址必填' }],
+    FunctionNumber: [{ required: true, message: '功能号必填' }],
+    SampleTime: [{ required: true, message: '采样间隔必填' }],
   },
 
   //表格栏
@@ -193,6 +218,44 @@ const config = {
         colKey: 'SerialNumber',
         align: 'center',
         title: '序列号',
+        width: 100,
+      },
+      {
+        colKey: 'op',
+        width: 60,
+        align: 'center',
+        title: 'op-column',
+        cell: 'op',
+      },
+    ],
+    columnsModbus: [
+      {
+        colKey: 'row-select',
+        type: 'multiple',
+        width: 50,
+      },
+      {
+        colKey: 'Name',
+        align: 'center',
+        title: '名称',
+        ellipsis: true
+      },
+      {
+        colKey: 'ApiTag',
+        align: 'center',
+        title: '标识名',
+        ellipsis: true
+      },
+      {
+        colKey: 'SlaveAddress',
+        align: 'center',
+        title: '从机地址',
+        width: 100,
+      },
+      {
+        colKey: 'DataAddress',
+        align: 'center',
+        title: '起始地址',
         width: 100,
       },
       {

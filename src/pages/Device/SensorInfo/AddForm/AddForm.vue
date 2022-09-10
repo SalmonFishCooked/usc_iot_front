@@ -16,6 +16,7 @@
           <Newlab v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="2" label="Modbus" :destroy-on-hide="false">
+          <Modbus v-model:DeviceID="myDeviceID" class="mt-4" />
         </t-tab-panel>
         <t-tab-panel :value="3" label="模拟量" :destroy-on-hide="false">
           <Simulation v-model:DeviceID="myDeviceID" class="mt-4" />
@@ -45,6 +46,7 @@ import Simulation from "./Simulation/Simulation.vue";
 import Number from "./Number/Number.vue";
 import ZigBee from "./ZigBee/ZigBee.vue";
 import Agriculture from "./Agriculture/Agriculture.vue";
+import Modbus from "./Modbus/Modbus.vue";
 
 const props = defineProps({
   show: Object,
