@@ -8,7 +8,11 @@ import TopBar from "./components/TopBar/TopBar.vue";
     <SideBar />
     <div class="w-full" style="margin-left: 232px;">
       <TopBar />
-      <router-view style="margin-left: 24px; margin-top: 12px; margin-right: 24px;" />
+      <router-view v-slot="{ Component }" style="margin-left: 24px; margin-top: 12px; margin-right: 24px;">
+        <keep-alive>
+        <component :is="Component"/>
+        </keep-alive>
+      </router-view>
     </div>
   </div>
 </template>
