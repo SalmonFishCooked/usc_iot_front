@@ -5,9 +5,6 @@
         <t-form-item label="时间段" name="time">
           <t-date-range-picker v-model="formData.time" enable-time-picker allow-input clearable />
         </t-form-item>
-        <t-form-item label="传感器" name="ApiTag">
-          <t-select></t-select>
-        </t-form-item>
         <t-form-item style="padding-top: 8px">
           <t-button theme="primary" type="submit" style="margin-right: 10px">查询</t-button>
           <t-button theme="default" variant="base" type="reset" style="margin-right: 10px">重置</t-button>
@@ -19,7 +16,7 @@
         <t-loading :loading="loading">
           <div class="flex items-center space-x-2 mb-4">
             <img class="w-8" src="../../../assets/svg/Data.svg" alt="">
-            <p class="font-bold text-lg flex-1">历史传感数据</p>
+            <p class="font-bold text-lg flex-1">历史在线数据</p>
           </div>
 
           <t-alert v-show="!tableData.data.length" theme="info" message="没有任何数据。" />

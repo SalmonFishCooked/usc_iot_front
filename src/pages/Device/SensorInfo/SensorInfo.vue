@@ -78,6 +78,7 @@ watch(() => deviceStore.deviceInfo, async (newVal) => {
 })
 //如果传感器类型选项卡的值发生变化，重新拉取表
 watch(tabs, async (newVal) => {
+  pagination.data = {...paginationINIT}
   await handleRefresh()
 })
 

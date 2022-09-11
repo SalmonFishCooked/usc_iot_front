@@ -14,6 +14,16 @@ const routes = [
         path: 'history',
         name: 'DeviceHistory',
         component: () => import('../pages/DeviceData/History/History.vue')
+      },
+      {
+        path: 'historyonline',
+        name: 'DeviceHistoryOnline',
+        component: () => import('../pages/DeviceData/HistoryOnline/HistoryOnline.vue')
+      },
+      {
+        path: 'historycommand',
+        name: 'DeviceHistoryCommand',
+        component: () => import('../pages/DeviceData/HistoryCommand/HistoryCommand.vue')
       }
     ]
   },

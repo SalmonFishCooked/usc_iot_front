@@ -79,8 +79,12 @@ watch(menuValue, (newVal) => {
   switch (newVal) {
     case '0-1':
       router.push({path: `/device/${3}`});break;
+    case '1-1':
+      router.push({name: 'DeviceHistoryOnline'});break;
     case '1-2':
       router.push({name: 'DeviceHistory'});break;
+    case '1-3':
+      router.push({name: 'DeviceHistoryCommand'});break;
   }
 })
 
@@ -103,8 +107,16 @@ onMounted(() => {
             menuValue.value='0-1'
             break
           }
+          case 'DeviceOnline': {
+            menuValue.value='1-1'
+            break
+          }
           case 'DeviceHistory': {
             menuValue.value='1-2'
+            break
+          }
+          case 'DeviceHistoryCommand': {
+            menuValue.value='1-3'
             break
           }
         }
