@@ -118,6 +118,7 @@ const rehandleClickOp = ({ text, row }) => {
     onConfirm: async ({ e }) => {
       const data = await api.sensor.deleteSensor({DeviceID: myDeviceID.data, ApiTag: row.ApiTag})
       if (data) {
+        pagination.data.current = 1
         await MessagePlugin.success("删除成功")
         PubSub.publish("refreshSensorTable")
       }
