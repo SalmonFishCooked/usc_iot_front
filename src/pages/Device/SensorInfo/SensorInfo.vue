@@ -46,7 +46,7 @@ import Table from "./Table/Table.vue";
 import {onBeforeUnmount, onMounted, reactive, ref, watch} from "vue";
 import AddForm from "./AddForm/AddForm.vue";
 import api from "../../../api/index.js";
-import {useDeviceStore} from "../../../../store/Device/index.js";
+import {useDeviceStore} from "../../../store/Device/index.js";
 import PubSub from "pubsub-js";
 import {DialogPlugin, MessagePlugin} from "tdesign-vue-next";
 

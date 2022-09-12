@@ -25,7 +25,7 @@
 import {onMounted, reactive, ref} from "vue";
 import api from "../../../api/index.js";
 import { NotifyPlugin } from 'tdesign-vue-next';
-import {useDeviceStore} from "../../../../store/Device/index.js";
+import {useDeviceStore} from "../../../store/Device/index.js";
 import {useRoute} from "vue-router";
 
 const route = useRoute()
