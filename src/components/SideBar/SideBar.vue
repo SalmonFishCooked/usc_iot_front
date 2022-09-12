@@ -75,7 +75,6 @@ const route = useRoute()
 
 const menuValue = ref('0-1')
 watch(menuValue, (newVal) => {
-  console.log(menuValue)
   switch (newVal) {
     case '0-1':
       router.push({path: `/device/${3}`});break;

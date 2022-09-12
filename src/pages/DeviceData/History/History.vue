@@ -6,7 +6,13 @@
           <t-date-range-picker v-model="formData.time" enable-time-picker allow-input clearable />
         </t-form-item>
         <t-form-item label="传感器" name="ApiTag">
-          <t-select></t-select>
+          <ItemSelect
+            :BaseUrl="base.sensorBase.getSensorInfo"
+            KeyWord="ApiTag"
+            :SearchForm="sensorSearchForm"
+            LabelWord="Name"
+            ValueWord="ApiTag"
+          />
         </t-form-item>
         <t-form-item style="padding-top: 8px">
           <t-button theme="primary" type="submit" style="margin-right: 10px">查询</t-button>
@@ -34,13 +40,26 @@ import config from "../config.js";
 import {onMounted, reactive, ref, watch} from "vue";
 import {MessagePlugin} from "tdesign-vue-next";
 import DataTable from "../DataTable/DataTable.vue";
+import base from "../../../api/base/index.js";
 import api from "../../../api/index.js";
 import {useRoute} from "vue-router";
+import ItemSelect from "../../../components/FormItem/SelectSingle/ItemSelect.vue";
 
 const route = useRoute()
 const loading = ref(false)
 const form = ref(null)
 const formData = ref({...config.FORM_DATA})
+
+const sensorSearchFormINIT = {
+  DeviceID: Number(route.params.id),
+  ApiTag: '',
+  Type: -1,
+  Page: 1,
+  PageSize: 10000,
+}
+const sensorSearchForm = reactive({
+  data: {...sensorSearchFormINIT}
+})
 
 const selectVal = reactive({
   value: []
