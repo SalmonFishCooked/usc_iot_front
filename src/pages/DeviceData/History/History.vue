@@ -36,7 +36,6 @@
 </template>
 
 <script setup>
-import config from "../config.js";
 import {onMounted, reactive, ref, watch} from "vue";
 import {MessagePlugin} from "tdesign-vue-next";
 import DataTable from "../DataTable/DataTable.vue";
@@ -44,6 +43,7 @@ import base from "../../../api/base/index.js";
 import api from "../../../api/index.js";
 import {useRoute} from "vue-router";
 import ItemSelect from "../../../components/FormItem/SelectSingle/ItemSelect.vue";
+import config from "../config.js";
 
 const route = useRoute()
 const loading = ref(false)

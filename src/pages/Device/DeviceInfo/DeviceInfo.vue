@@ -17,6 +17,10 @@
           <div class="text-gray-600 font-bold text-sm">设备名称：{{deviceData.data.Name}}</div>
         </div>
       </div>
+      <div class="flex items-center space-x-4">
+        <p class="text-sm">自动更新设备状态:</p>
+        <t-select :options="common_config.options.optionsUpdateTime" style="width: 300px;"></t-select>
+      </div>
     </t-loading>
   </div>
 </template>
@@ -27,6 +31,7 @@ import api from "../../../api/index.js";
 import { NotifyPlugin } from 'tdesign-vue-next';
 import {useDeviceStore} from "../../../store/Device/index.js";
 import {useRoute} from "vue-router";
+import common_config from "../../common_config.js";
 
 const route = useRoute()
 const deviceStore = useDeviceStore()

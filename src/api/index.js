@@ -10,7 +10,7 @@ axios.defaults.baseURL = 'http://localhost:8080'
 
 // 请求拦截器
 // axios.interceptors.request.use(
-//   config => {
+//   common_config => {
 //
 //   },
 //   error => {

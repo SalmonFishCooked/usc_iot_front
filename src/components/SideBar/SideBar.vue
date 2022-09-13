@@ -106,7 +106,7 @@ onMounted(() => {
             menuValue.value='0-1'
             break
           }
-          case 'DeviceOnline': {
+          case 'DeviceHistoryOnline': {
             menuValue.value='1-1'
             break
           }
