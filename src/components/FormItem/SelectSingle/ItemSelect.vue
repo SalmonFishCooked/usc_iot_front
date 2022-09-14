@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import {reactive, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
 import axios from "axios";
 

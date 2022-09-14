@@ -89,11 +89,12 @@ async function handleRefresh() {
   if (!loading.value) {
     loading.value = true
 
-    // const data = await api.sensor.getSensorInfo({...{DeviceID: DeviceID.data, ApiTag: '', Type: tabs.value}, ...{Page: pagination.data.current, PageSize: pagination.data.pageSize}})
-    // if (data) {
-    //   tableData.data = data.data
-    //   pagination.data.total = data.total
-    // }
+    const data = await api.history.getHistoryInfo(sensorSearchForm.data)
+    if (data) {
+      tableData.data = data.data
+      pagination.data.total = data.total
+      MessagePlugin.success('查询成功')
+    }
 
     loading.value = false
   }
@@ -102,11 +103,13 @@ async function handleRefresh() {
 const onReset = () => {
   MessagePlugin.success('重置成功')
 }
-const onSubmit = ({ validateResult, firstError }) => {
-  if (validateResult === true) {
-    MessagePlugin.success('提交成功');
-  } else {
-    MessagePlugin.warning(firstError);
+const onSubmit = async ({ validateResult, firstError }) => {
+  if (!loading.value) {
+    if (validateResult === true) {
+      await handleRefresh()
+    } else {
+      await MessagePlugin.warning(firstError)
+    }
   }
 }
 

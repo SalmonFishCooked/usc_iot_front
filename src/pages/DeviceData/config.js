@@ -36,48 +36,49 @@ const config = {
         ellipsis: true
       },
       {
-        colKey: 'RecordTime',
+        colKey: 'CreatedAt',
         align: 'center',
         title: '记录时间',
+        width: 300,
         ellipsis: true
       },
       {
         colKey: 'SensorID',
         align: 'center',
         title: '传感器ID',
-        width: 100,
+        width: 120,
       },
       {
         colKey: 'SensorName',
         align: 'center',
         title: '传感器名称',
-        width: 100,
+        width: 200,
       },
       {
         colKey: 'SensorApiTag',
         align: 'center',
         title: '传感器标志名',
-        width: 100,
+        width: 200,
       },
       {
-        colKey: 'SensorUnit',
+        colKey: 'SensorValue',
         align: 'center',
         title: '传感值/单位',
-        width: 100,
+        width: 120,
       },
       {
         colKey: 'DeviceApiTag',
         align: 'center',
         title: '设备标识',
-        width: 100,
+        width: 200,
       },
-      {
-        colKey: 'op',
-        width: 60,
-        align: 'center',
-        title: 'op-column',
-        cell: 'op',
-      },
+      // {
+      //   colKey: 'op',
+      //   width: 60,
+      //   align: 'center',
+      //   title: 'op-column',
+      //   cell: 'op',
+      // },
     ],
   }
 }

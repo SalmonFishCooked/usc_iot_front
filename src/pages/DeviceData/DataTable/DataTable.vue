@@ -33,7 +33,7 @@ const props = defineProps({
 
 const data = reactive(props.data);
 const myTabs = reactive(props.Tabs)
-const columns = ref(config.columns.columnsCustom)
+const columns = ref(config.columns.columnsHistory)
 
 const stripe = ref(false);
 const bordered = ref(true);
