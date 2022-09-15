@@ -44,6 +44,7 @@ import api from "../../../api/index.js";
 import {useRoute} from "vue-router";
 import ItemSelect from "../../../components/FormItem/SelectSingle/ItemSelect.vue";
 import config from "../config.js";
+import utils from "../../../utils/index.js";
 
 const route = useRoute()
 const loading = ref(false)
@@ -92,8 +93,14 @@ async function handleRefresh() {
     const data = await api.history.getHistoryInfo(sensorSearchForm.data)
     if (data) {
       tableData.data = data.data
+
+      //转换时间格式
+      for (let i of tableData.data) {
+        i.CreatedAt = utils.common.dateFormat('YYYY-mm-dd HH:MM', i.CreatedAt)
+      }
+
       pagination.data.total = data.total
-      MessagePlugin.success('查询成功')
+      await MessagePlugin.success('查询成功')
     }
 
     loading.value = false

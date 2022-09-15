@@ -39,7 +39,7 @@ const config = {
         colKey: 'CreatedAt',
         align: 'center',
         title: '记录时间',
-        width: 300,
+        width: 200,
         ellipsis: true
       },
       {
