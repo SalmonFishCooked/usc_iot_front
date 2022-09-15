@@ -1,18 +1,11 @@
 import axios from "axios";
 import base from "../../base/index.js";
+import service from "../index.js";
 
 const history = {
   //获取历史传感记录列表
   async getHistoryInfo(payload) {
-    let data = null
-
-    await axios.post(base.historyBase.getHistoryInfo, payload).then((res) => {
-      data = res.data
-    }).catch((err) => {
-
-    })
-
-    return data
+    return await service.commonPost(base.historyBase.getHistoryInfo, payload)
   },
 
   // //创建设备

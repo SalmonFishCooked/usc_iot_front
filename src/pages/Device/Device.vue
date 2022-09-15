@@ -1,7 +1,7 @@
 <template>
   <div>
     <DeviceInfo />
-    <div class="grid grid-cols-12 mt-4 gap-4">
+    <div class="grid grid-cols-12 my-4 gap-4">
       <SensorInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
       <ActuatorInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
       <CameraInfo class="oversize:col-span-4 xl:col-span-6 col-span-12" />
