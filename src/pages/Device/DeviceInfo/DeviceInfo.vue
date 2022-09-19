@@ -55,7 +55,7 @@ async function handleInit() {
   if (!loading.value) {
     loading.value = true
 
-    const data = await api.device.getDeviceInfo({id: route.params.id})
+    const data = await api.device.getDeviceInfo({ID: Number(route.params.id), Page:1, PageSize: 5})
     if (data) {
       deviceData.data = data.data[0]
       deviceStore.deviceInfo = data.data[0]
