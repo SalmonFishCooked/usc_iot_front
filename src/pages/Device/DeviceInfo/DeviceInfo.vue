@@ -1,6 +1,12 @@
 <template>
-  <div class="bg-white shadow-box p-4 rounded-md">
+  <div class="bg-white shadow-box p-4 rounded-md relative">
     <t-loading :loading="loading">
+      <div class="absolute right-0">
+        <t-button @click="listVisibleModal.data = true" variant="outline">
+          <t-icon name="swap" />
+          切换设备
+        </t-button>
+      </div>
       <div class="flex items-center space-x-2">
         <img class="w-32" src="../../../assets/svg/device.svg" alt="">
         <div class="space-y-1">
@@ -23,6 +29,7 @@
       </div>
     </t-loading>
   </div>
+  <ChangeDeviceList :show="listVisibleModal" />
 </template>
 
 <script setup>
@@ -32,10 +39,13 @@ import { NotifyPlugin } from 'tdesign-vue-next';
 import {useDeviceStore} from "../../../store/Device/index.js";
 import {useRoute} from "vue-router";
 import common_config from "../../common_config.js";
+import ChangeDeviceList from "./ChangeDeviceList/ChangeDeviceList.vue";
 
 const route = useRoute()
 const deviceStore = useDeviceStore()
 const loading = ref(false)
+
+const listVisibleModal = reactive({data: false})
 
 const deviceData = reactive({
   data: {}
