@@ -19,8 +19,9 @@
           <t-tooltip v-if="deviceData.data.IsOnline" theme="light" class="mr-2" content="当前设备处于在线状态">
             <t-tag class="ml-2" theme="success">在线</t-tag>
           </t-tooltip>
-          <div class="text-gray-600 font-bold text-sm">设备ID：{{deviceData.data.ID}}</div>
-          <div class="text-gray-600 font-bold text-sm">设备名称：{{deviceData.data.Name}}</div>
+<!--          <div class="text-gray-600 font-bold text-sm">设备ID：{{deviceData.data.ID}}</div>-->
+          <div class="text-gray-600 font-bold text-sm">设备名：{{deviceData.data.Name}}</div>
+          <div class="text-gray-600 font-bold text-sm">标识名：{{deviceData.data.ApiTag}}</div>
         </div>
       </div>
       <div class="flex items-center space-x-4">
@@ -33,13 +34,14 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import api from "../../../api/index.js";
 import { NotifyPlugin } from 'tdesign-vue-next';
 import {useDeviceStore} from "../../../store/Device/index.js";
 import {useRoute} from "vue-router";
 import common_config from "../../common_config.js";
 import ChangeDeviceList from "./ChangeDeviceList/ChangeDeviceList.vue";
+import router from "../../../router/index.js";
 
 const route = useRoute()
 const deviceStore = useDeviceStore()
@@ -49,6 +51,12 @@ const listVisibleModal = reactive({data: false})
 
 const deviceData = reactive({
   data: {}
+})
+
+watch(route, async (v) => {
+  if (route.name === "Device") {
+    await handleInit()
+  }
 })
 
 async function handleInit() {

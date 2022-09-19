@@ -77,7 +77,7 @@ const menuValue = ref('0-1')
 watch(menuValue, (newVal) => {
   switch (newVal) {
     case '0-1':
-      router.push({path: `/device/${3}`});break;
+      router.push({path: `/device/${route.params.id}`});break;
     case '1-1':
       router.push({name: 'DeviceHistoryOnline'});break;
     case '1-2':

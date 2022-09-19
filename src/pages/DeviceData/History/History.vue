@@ -120,6 +120,13 @@ const onSubmit = async ({ validateResult, firstError }) => {
   }
 }
 
+watch(route, async (v) => {
+  if (route.name === "DeviceHistory") {
+    sensorSearchForm.data.DeviceID = Number(route.params.id)
+    await handleRefresh()
+  }
+})
+
 onMounted(async () => {
   await handleRefresh()
 })
