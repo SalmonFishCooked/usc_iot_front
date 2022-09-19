@@ -52,13 +52,6 @@
         <t-menu-item value="2-2"> 策略执行记录 </t-menu-item>
       </t-submenu>
 
-      <t-menu-item value="precise-monitor">
-        <template #icon>
-          <t-icon name="precise-monitor" />
-        </template>
-        精准监控
-      </t-menu-item>
-
 <!--      <template #operations>-->
 <!--        <t-icon class="t-menu__operations-icon" name="view-list" @click="changeCollapsed" />-->
 <!--      </template>-->
