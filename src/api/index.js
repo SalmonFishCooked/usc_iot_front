@@ -2,6 +2,7 @@ import axios from 'axios'
 import device from "./service/device";
 import sensor from "./service/sensor/index.js";
 import history from "./service/history/index.js";
+import actuator from "./service/actuator/index.js";
 
 //dev环境
 axios.defaults.baseURL = 'http://localhost:8080'
@@ -48,6 +49,7 @@ const api = {
   device,
   sensor,
   history,
+  actuator,
 }
 
 export default api

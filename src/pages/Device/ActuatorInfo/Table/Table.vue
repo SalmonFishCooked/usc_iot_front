@@ -2,7 +2,7 @@
   <div>
     <!-- 当数据为空需要占位时，会显示 cellEmptyContent -->
     <t-table
-      row-key="id"
+      row-key="ApiTag"
       :data="data.data"
       :columns="columns"
       :stripe="stripe"
@@ -10,30 +10,39 @@
       :hover="hover"
       :table-layout="tableLayout ? 'auto' : 'fixed'"
       :size="size"
-      :pagination="pagination"
-      :selected-row-keys="selectedRowKeys"
+      :pagination="pagination.data"
+      :selected-row-keys="selectedRowKeys.value"
       @select-change="rehandleSelectChange"
       cell-empty-content="-"
       @row-click="handleRowClick"
     >
-      <template #device_transmission_type="{ row }">
+      <template #TransmissionType="{ row }">
         <t-tooltip theme="light" content="只支持设备数据上报至云端">
-          <t-tag theme="primary" v-if="row.device_transmission_type === 0" size="small">只上报</t-tag>
+          <t-tag theme="primary" v-if="row.TransmissionType === 0" size="small">上报和下发</t-tag>
         </t-tooltip>
         <t-tooltip theme="light" content="当设备发生指定的状态或达到指定值时，上报警报信号">
-          <t-tag theme="warning" v-if="row.device_transmission_type === 1" size="small">报警</t-tag>
+          <t-tag theme="warning" v-if="row.TransmissionType === 1" size="small">报警</t-tag>
         </t-tooltip>
         <t-tooltip theme="light" content="当设备发生指定的状态或达到指定值时，上报故障信息">
-          <t-tag theme="danger" v-if="row.device_transmission_type === 2" size="small">故障</t-tag>
+          <t-tag theme="danger" v-if="row.TransmissionType === 2" size="small">故障</t-tag>
         </t-tooltip>
       </template>
-      <template #device_data_type="{ row }">
-        <t-tag theme="success" v-if="row.device_data_type === 0" size="small">整数型</t-tag>
-        <t-tag theme="success" v-if="row.device_data_type === 1" size="small">浮点型</t-tag>
-        <t-tag theme="success" v-if="row.device_data_type === 2" size="small">布尔型</t-tag>
-        <t-tag theme="success" v-if="row.device_data_type === 3" size="small">字符型</t-tag>
-        <t-tag theme="success" v-if="row.device_data_type === 4" size="small">枚举型</t-tag>
-        <t-tag theme="success" v-if="row.device_data_type === 5" size="small">二进制型</t-tag>
+      <template #DataType="{ row }">
+        <t-tag theme="success" v-if="row.DataType === 0" size="small">整数型</t-tag>
+        <t-tag theme="success" v-if="row.DataType === 1" size="small">浮点型</t-tag>
+        <t-tag theme="success" v-if="row.DataType === 2" size="small">布尔型</t-tag>
+        <t-tag theme="success" v-if="row.DataType === 3" size="small">字符型</t-tag>
+        <t-tag theme="success" v-if="row.DataType === 4" size="small">枚举型</t-tag>
+        <t-tag theme="success" v-if="row.DataType === 5" size="small">二进制型</t-tag>
+      </template>
+      <template #SerialNumber="{ row }">
+        <t-tag theme="success" size="small">{{row.SerialNumber}}</t-tag>
+      </template>
+      <template #DataAddress="{ row }">
+        <t-tag theme="success" size="small">{{row.DataAddress}}</t-tag>
+      </template>
+      <template #Channel="{ row }">
+        <t-tag theme="success" size="small">{{row.Channel}}</t-tag>
       </template>
       <template #op-column>
         <p>操作</p>
@@ -46,64 +55,24 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue';
+import {nextTick, reactive, ref, watch} from 'vue';
+import {DialogPlugin, MessagePlugin} from 'tdesign-vue-next';
+import api from "../../../../api/index.js";
+import PubSub from "pubsub-js";
+import config from "../config.js";
 
 const props = defineProps({
-  data: Object
+  data: Object,
+  DeviceID: Object,
+  SelectVal: Object,
+  PageInfo: Object,
+  Tabs: Object
 })
 
-const data = reactive({
-  data: []
-});
-const total = 28;
-// for (let i = 0; i < total; i++) {
-//   data.push({
-//     id: i,
-//     device_name: '测试传感器' + i + '号',
-//     device_flag: 'testcgq' + i ,
-//     device_transmission_type: [0, 1, 2][i % 3],
-//     device_data_type: [0, 1, 2, 3, 4, 5][i % 6],
-//   });
-// }
-
-const columns = [
-  {
-    colKey: 'row-select',
-    type: 'multiple',
-    width: 50,
-  },
-  {
-    colKey: 'device_name',
-    align: 'center',
-    title: '名称',
-    ellipsis: true
-  },
-  {
-    colKey: 'device_flag',
-    align: 'center',
-    title: '标志名',
-    ellipsis: true
-  },
-  {
-    colKey: 'device_transmission_type',
-    align: 'center',
-    title: '传输类型',
-    width: 100,
-  },
-  {
-    colKey: 'device_data_type',
-    align: 'center',
-    title: '数据类型',
-    width: 100,
-  },
-  {
-    colKey: 'op',
-    width: 60,
-    align: 'center',
-    title: 'op-column',
-    cell: 'op',
-  },
-];
+const data = reactive(props.data);
+const myDeviceID = reactive(props.DeviceID)
+const myTabs = reactive(props.Tabs)
+const columns = ref(config.columns.columnsCustom)
 
 const stripe = ref(false);
 const bordered = ref(true);
@@ -111,24 +80,57 @@ const hover = ref(true);
 const tableLayout = ref(true);
 const size = ref('small');
 
+//Tabs选项卡一变化，改变对应columns
+watch(myTabs, (newVal) => {
+  switch (newVal.value) {
+    case 0:
+      columns.value = config.columns.columnsCustom;break;
+    case 1:
+      columns.value = config.columns.columnsNewlab;break;
+    case 2:
+      columns.value = config.columns.columnsModbus;break;
+    case 3:
+      columns.value = config.columns.columnsSimulation;break;
+    case 4:
+      columns.value = config.columns.columnsNumber;break;
+    case 5:
+      columns.value = config.columns.columnsZigBee;break;
+    case 6:
+      columns.value = config.columns.columnsAgriculture;break;
+  }
+})
+
 const handleRowClick = (e) => {
-  console.log(e);
+
 };
 
-const selectedRowKeys = ref([])
+const selectedRowKeys = reactive(props.SelectVal)
 const rehandleSelectChange = (value, { selectedRowData }) => {
   selectedRowKeys.value = value;
 }
 
 const rehandleClickOp = ({ text, row }) => {
-  console.log(text, row);
+  const confirmDia = DialogPlugin({
+    header: '删除',
+    body: '确定删除该项数据？',
+    confirmBtn: '确定',
+    cancelBtn: '取消',
+    onConfirm: async ({ e }) => {
+      const data = await api.sensor.deleteSensor({DeviceID: myDeviceID.data, ApiTag: row.ApiTag})
+      if (data) {
+        pagination.data.current = 1
+        await MessagePlugin.success("删除成功")
+        PubSub.publish("refreshSensorTable")
+      }
+      confirmDia.hide();
+    },
+    onClose: ({ e, trigger }) => {
+      confirmDia.hide();
+    },
+  });
 };
 
-const pagination = {
-  defaultCurrent: 1,
-  defaultPageSize: 5,
-  total,
-};
+const pagination = reactive(props.PageInfo)
 </script>
 
 <style scoped>
