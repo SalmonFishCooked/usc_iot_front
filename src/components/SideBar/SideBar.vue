@@ -16,7 +16,7 @@
           alt="logo"
           style="margin-left: 16px;"
         />
-        <p v-show="!collapsed" style="color: white; margin-left: 8px; font-weight: 700;">南华大学 IOT 云平台</p>
+        <p v-show="!collapsed" style="color: white; margin-left: 8px; font-weight: 700;">南华大学 IoT 云平台</p>
       </template>
 
       <t-submenu value="0">
@@ -91,8 +91,8 @@ onMounted(() => {
   nextTick(() => {
     setTimeout(() => {
       if (route.path === '/') {
-        router.push({path: `/device/${3}`})
-        menuValue.value='0-1'
+        // router.push({path: `/device/${3}`})
+        // menuValue.value='0-1'
       } else {
         switch (route.name) {
           case 'Device': {

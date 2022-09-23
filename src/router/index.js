@@ -39,6 +39,14 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/',
+    name: 'Main',
+    component: () => import('../pages/Main/Main.vue'),
+    meta: {
+      title: "首页"
+    }
+  }
 ]
 
 const router = createRouter({
@@ -48,7 +56,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   //设置网页标题
-  window.document.title = to.meta.title + ' - ' + '南华大学 IOT 云平台'
+  window.document.title = to.meta.title + ' - ' + '南华大学 IoT 云平台'
   next()
 })
 
