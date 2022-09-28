@@ -7,6 +7,7 @@
         </t-form-item>
         <t-form-item label="传感器" name="ApiTag">
           <ItemSelect
+            :key="sensorSearchForm.data.DeviceID"
             v-model:ValueSelect="sensorApiTagSelectVal"
             :BaseUrl="base.sensorBase.getSensorInfo"
             KeyWord="ApiTag"
