@@ -1,6 +1,6 @@
 <template>
   <t-select
-    v-model="value"
+    v-model="value.data"
     filterable
     clearable
     placeholder="请选择"
@@ -13,11 +13,12 @@
 </template>
 
 <script setup>
-import {reactive, ref, watch} from 'vue'
+import {reactive, ref} from 'vue'
 import {useRoute} from "vue-router";
 import axios from "axios";
 
 const props = defineProps({
+  ValueSelect: Object,
   BaseUrl: String,
   KeyWord: String,
   SearchForm: Object,
@@ -25,7 +26,7 @@ const props = defineProps({
   ValueWord: String,
 })
 
-const value = ref(null)
+const value = reactive(props.ValueSelect)
 const loading = ref(false)
 const optionsRef = ref([])
 const route = useRoute()

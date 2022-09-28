@@ -7,6 +7,7 @@
         </t-form-item>
         <t-form-item label="传感器" name="ApiTag">
           <ItemSelect
+            v-model:ValueSelect="sensorApiTagSelectVal"
             :BaseUrl="base.sensorBase.getSensorInfo"
             KeyWord="ApiTag"
             :SearchForm="sensorSearchForm"
@@ -53,7 +54,7 @@ const formData = ref({...config.FORM_DATA})
 
 const sensorSearchFormINIT = {
   DeviceID: Number(route.params.id),
-  ApiTag: '',
+  SensorApiTag: '',
   Type: -1,
   Page: 1,
   PageSize: 10000,
@@ -64,6 +65,9 @@ const sensorSearchForm = reactive({
 
 const selectVal = reactive({
   value: []
+})
+const sensorApiTagSelectVal = reactive({
+  data: ''
 })
 const tableData = reactive({
   data: []
@@ -90,6 +94,7 @@ async function handleRefresh() {
   if (!loading.value) {
     loading.value = true
 
+    sensorSearchForm.data.SensorApiTag = sensorApiTagSelectVal.data
     const data = await api.history.getHistoryInfo(sensorSearchForm.data)
     if (data) {
       tableData.data = data.data
